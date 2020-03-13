@@ -66,7 +66,7 @@ bot.on('guildMemberAdd', member =>{
 
   if(!channel) return
 
-  channel.send(`Gegroet ${member}, welkom in **gluhub_** 😳`)
+  channel.send(`Gegroet ${member}, welkom in **${member.guild.name}** 😳`)
 
   con.query(`SELECT * FROM ungrouped WHERE member_id = ${member.id}`, (err, results) =>{
     if(err) throw (err)
@@ -91,7 +91,7 @@ bot.on('guildMemberAdd', member =>{
       return
     }
   })
-  const guest = member.guild.roles.find(r => r.name === '[_guest_]')
+  const guest = member.guild.roles.find(r => r.name === 'Studenten')
   
   member.addRole(guest).catch(console.error)
   
@@ -198,7 +198,7 @@ bot.on('message', message => {
           .setColor("RANDOM")
           .addField("Nieuw leveltje", `${results[0].userLevel}`)
         
-          const channelL = bot.channels.find(ch => ch.id ==='686951092986052620')
+          const channelL = bot.channels.find(ch => ch.id ==='687975218253135884')
           if(message.author.bot) return
           channelL.send(lvlup)
       }
