@@ -3,10 +3,10 @@ const Discord = require('discord.js')
 const bot = new Discord.Client()
 
 const config = require('./botconfig.json')
-const ytld = require('ytdl-core')
+const ytdl = require('ytdl-core')
 
 const prefix = config.prefix
-
+require('dotenv').config()
 var queue = new Map()
 
 bot.on('ready', () =>{
@@ -17,7 +17,7 @@ bot.on('message', async message =>{
   if(message.author.bot) return
   if(message.content.indexOf(prefix) !== 0) return
 
-  const args = message.content.split(prefix.length).trim().split(/ +/g)
+  const args = message.content.slice(prefix.length).trim().split(/ +/g)
   const command = args.shift().toLowerCase()
 
   const serverQueue = queue.get(message.guild.id)
@@ -37,7 +37,7 @@ async function play(message, serverQueue){
     return message.channel.send('Ik heb geen permissie om het voice kanaal te joinen')
   }
 
-  const songInfo = await ytld.getInfo(args[1])
+  const songInfo = await ytdl.getInfo(args[1])
   const song ={
     title:songInfo.title, 
     url:songInfo.video_url
