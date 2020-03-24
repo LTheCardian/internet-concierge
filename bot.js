@@ -231,6 +231,20 @@ bot.on('message', message =>{
       message.channel.send(`Je bent nu lid van **${_2wd2.name}**`).then(m => m.delete(6000))
       console.log(`Successfully added ${message.author.username} to ${_2wd2.name}`)
       break;
+    case '3IV1'.toLowerCase():
+      const _3iv1 = message.guild.roles.find(r => r.name ==='3IV1')
+      member.addRole(_3iv1).catch(console.error)
+      member.addRole(studenten).catch(console.error)
+      message.channel.send(`Je bent nu lid van **${_3iv1.name}**`).then(m => m.delete(6000))
+      console.log(`Successfully added ${message.author.username} to ${_3iv1.name}`)
+    break;
+    case '3IV2'.toLowerCase():
+      const _3iv2 = message.guild.roles.find(r => r.name ==='3IV2')
+      member.addRole(_3iv2).catch(console.error)
+      member.addRole(studenten).catch(console.error)
+      message.channel.send(`Je bent nu lid van **${_3iv2.name}**`).then(m => m.delete(6000))
+      console.log(`Successfully added ${message.author.username} to ${_3iv2.name}`)
+    break;
     case '4IV1'.toLowerCase():
       const _4iv1 = message.guild.roles.find(r => r.name ==='4IV1')
       member.addRole(_4iv1).catch(console.error)
