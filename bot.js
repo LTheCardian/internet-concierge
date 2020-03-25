@@ -265,7 +265,13 @@ bot.on('message', message =>{
       message.channel.send(`Je bent nu lid van **${_gio.name}**`).then(m => m.delete(6000))
       console.log(`Successfully added ${message.author.username} to ${_gio.name}`)
     break
-    // case '1CM1'.toLowerCase():
+    case 'GLUBOT'.toLowerCase():
+      const glubot = message.guild.roles.find(r => r.name ==='GLUbot')
+      member.addRole(glubot).catch(console.error)
+      message.channel.send(`Je bent nu lid van **${glubot.name}**`).then(m => m.delete(6000))
+      console.log(`Successfully added ${message.author.username} to ${glubot.name}`)
+    break;
+     // case '1CM1'.toLowerCase():
     //   const _1cm1 = message.guild.roles.find(r => r.name === '1CM1')
     //   member.addRole(studenten).catch(console.error)
     //   member.addRole(_1cm1).catch(console.error)
