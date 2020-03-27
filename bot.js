@@ -581,11 +581,8 @@ bot.on("message", function(message) {
   var parts = message.content.split(" "); 
   
   if (parts[0] === ".image") { 
-
-
-      image(message, parts); 
+    image(message, parts); 
   }
-
 });
 
 
