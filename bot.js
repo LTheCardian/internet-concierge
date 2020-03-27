@@ -12,6 +12,8 @@ const mysql = require("mysql")
 const schedule = require('node-schedule')
 const con = mysql.createConnection(process.env.JAWSDB_URL)
 const Twitter = require('twit')
+const ytdl = require('ytdl-core')
+const queue = new Map()
 con.connect(e =>{
   if(e) throw (e)
   console.log('Connected to database')
@@ -659,6 +661,25 @@ stream.on('tweet', tweet =>{
   const tM = `${tweet.user.name} (@${tweet.user.screen_name}) heeft dit zojuist getweet: https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
   bot.channels.get(dest).send(tM)
   return false
+})
+
+
+//music bot
+
+bot.on('message', async message =>{
+  if(message.author.bot) return 
+  if(!message.content.startsWith(prefix)) return
+
+  const serverQueue = queue.get(message.guild.id)
+
+  if(message.content.startsWith(`${prefix} play`)){
+    execute(message, serverQueue)
+    return
+  }else if(message.content.startsWith(`${prefix} skip`)){
+    skip(message, serverQueue)
+  } else if(message.content.startsWith(`${prefix} stop`)){
+    stop(message, serverQueue)
+  }
 })
 
 
