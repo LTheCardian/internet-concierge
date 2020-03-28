@@ -17,7 +17,7 @@ const queue = new Map()
 let prefix = botconfig.prefix
 con.connect(e =>{
   if(e) throw (e)
-  console.log('Connected to database')
+  console.log('Connected  database')
 })
 const twitterConf = {
   consumer_key: process.env.TCK,
