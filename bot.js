@@ -493,7 +493,7 @@ bot.on('message', message =>{
   if(message.author.bot) return
   if(message.channel === channelR){
     message.delete(5000)
-    console.log(`I just deleted ${message.content} send by ${message.author.username} in #rollen`)
+    console.log(`I just deleted ${message.content} send ${message.author.username} in #rollen`)
   }else{
     return
   }
