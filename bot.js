@@ -12,9 +12,12 @@ const mysql = require("mysql")
 const schedule = require('node-schedule')
 const con = mysql.createConnection(process.env.JAWSDB_URL)
 const Twitter = require('twit')
+const ytdl = require('ytdl-core')
+const queue = new Map()
+let prefix = botconfig.prefix
 con.connect(e =>{
   if(e) throw (e)
-  console.log('Connected to database')
+  console.log('Connected  database')
 })
 const twitterConf = {
   consumer_key: process.env.TCK,
@@ -41,7 +44,7 @@ fs.readdir("./commands/", (err, files) => {
 });
 
 bot.on("ready", async () => {
-  console.log(`${bot.user.username} is online on ${bot.guilds.size} servers`);
+  console.log(`${bot.user.username} is on ${bot.guilds.size} servers`);
   bot.user.setActivity("GLU bot WEB. gemaakt met ❤️ door Gio ", {
     type: "PLAYING"
   });
@@ -490,7 +493,7 @@ bot.on('message', message =>{
   if(message.author.bot) return
   if(message.channel === channelR){
     message.delete(5000)
-    console.log(`I just deleted ${message.content} send by ${message.author.username} in #rollen`)
+    console.log(`I just deleted ${message.content} send ${message.author.username} in #rollen`)
   }else{
     return
   }
@@ -581,11 +584,8 @@ bot.on("message", function(message) {
   var parts = message.content.split(" "); 
   
   if (parts[0] === ".image") { 
-
-
-      image(message, parts); 
+    image(message, parts); 
   }
-
 });
 
 
@@ -627,7 +627,7 @@ bot.on('message', message =>{
   con.query(`SELECT * FROM messages WHERE message_id = ${message.id}` ,(e, r) =>{
     if(e) throw e
     if(message.content.includes('heeft dit zojuist getweet: https://twitter.com/')) return
-    if(r.length === 0 && message.content.length > 1){
+    if(r.length === 0 && message.content.length > 1 && !message.content.includes('')){
       con.query(`INSERT INTO messages(message_id, message_content, author, author_id, channel_name, channel_id) VALUES('${message.id}', '${message.content}', '${message.author.username}' , '${message.author.id}', '${message.channel.name}', '${message.channel.id}')`, e =>{
         if(e) throw e
         console.log(`Successfully added ${message.content} send by ${message.author.username} in the table`)
@@ -664,6 +664,104 @@ stream.on('tweet', tweet =>{
   return false
 })
 
+
+//music bot
+
+// bot.on('message', async message =>{
+//   if(message.author.bot) return 
+//   if(!message.content.startsWith(prefix)) return
+
+//   const serverQueue = queue.get(message.guild.id)
+
+//   if(message.content.startsWith(`${prefix}play`)){
+//     execute(message, serverQueue)
+//     return
+//   }else if(message.content.startsWith(`${prefix}skip`)){
+//     skip(message, serverQueue)
+//   } else if(message.content.startsWith(`${prefix}stop`)){
+//     stop(message, serverQueue)
+//   }
+// })
+
+
+// async function execute(message, serverQueue){
+//   const args= message.content.split(" ")
+//   const voiceChannel = message.member.voiceChannel
+//   if(!voiceChannel){
+//     return message.channel.send('Je moet in een voice kanaal zitten')
+//   }
+//   const permissions = voiceChannel.permissionsFor(message.client.user)
+//   if(!permissions.has('CONNECT') || !permissions.has('SPEAK')){
+//     return message.channel.send("Ik heb niet genoeg permissie")
+//   }
+
+
+//   const songInfo = await ytdl.getInfo(args[1])
+//   const song ={
+//     title:songInfo.title,
+//     url:songInfo.video_url
+//   }
+
+//   if(!serverQueue){
+//     const queueConstruct ={
+//       textChannel: message.channel,
+//       voiceChannel: voiceChannel,
+//       connection: null,
+//       songs: [],
+//       volume:5,
+//       playing:true
+//     }
+
+//     queue.set(message.guild.id, queueConstruct)
+//     queueConstruct.songs.push(song)
+
+//     try{
+//       var connection = await voiceChannel.join()
+
+//       queueConstruct.connection = connection
+//       play(message.guild, queueConstruct.songs[0])
+//     }catch(e){
+//       console.log(e)
+//       queue.delete(message.guild.id)
+//       return message.channel.send(e)
+//     }
+//   }else{
+//     serverQueue.songs.push(song)
+//     return message.channel.send(`${song.title} is toegevoegd aan de wachtrij`)
+//   }
+// }
+
+
+// function skip (message, serverQueue){
+//   if(!message.member.voiceChannel){
+//     return message.channel.send('Je moet in een voice kanaal zitten')
+//   }
+
+//   if(!serverQueue){
+//     message.channel.send('Er is niets om overteslaan')
+//   }
+
+//   serverQueue.songs = []
+//   serverQueue.connection.dispatcher.end()
+// }
+// function play(guild, song) {
+//   const serverQueue = queue.get(guild.id);
+//   if (!song) {
+//     serverQueue.voiceChannel.leave();
+//     queue.delete(guild.id);
+//     return;
+//   }
+
+//   const dispatcher = serverQueue.connection
+//     .play(ytdl(song.url))
+//     .on("finish", () => {
+//       serverQueue.songs.shift();
+//       play(guild, serverQueue.songs[0]);
+//     })
+//     .on("error", error => console.error(error));
+//   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+//   serverQueue.textChannel.send(`Begonnen met het afspelen van: **${song.title}**`);
+// }
 
 
 bot.login(process.env.TOKEN).then(()=>{
