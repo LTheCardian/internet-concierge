@@ -16,17 +16,23 @@ module.exports.run = async(bot, message, args, con) =>{
                 if(groups.length === 0){
                     message.channel.send('Er zijn geen groepen in de database')
                 }else{
-                    con.query(`INSERT INTO c_tickets(group_id, group_name, ticket_id, ticket_name) VALUES ('${groups[0].group_id}', '${groups[0].group_name}', '${tickets[0].ticket_id}', '${ticket_name}')`, e =>{
-                        if (e) throw e
-
-                        console.log(`${message.author.username} heeft succesvol ${ticket_name} geclaimed`)
-
-                        message.channel.send(`Je hebt successvol **${ticket_name}** geclaimed`)
-                    })
-
-                    con.query(`DELETE FROM tickets WHERE ticket_name = '${ticket_name}'`, e =>{
+                    con.query(`SELECT * FROM grouped WHERE member_id = '${message.author.id}'`, (e, r) =>{
                         if(e) throw e
-                        console.log(`Deleted ${ticket_name}`)
+                        if(r.length > 0){
+                            con.query(`INSERT INTO c_tickets(group_id, group_name, ticket_id, ticket_name) VALUES ('${r[0].group_id}', '${r[0].group_name}', '${tickets[0].ticket_id}', '${ticket_name}')`, e =>{
+                                if (e) throw e
+        
+                                console.log(`${message.author.username} heeft succesvol ${ticket_name} geclaimed`)
+        
+                                message.channel.send(`Je hebt successvol **${ticket_name}** geclaimed`)
+                            })
+                            con.query(`DELETE FROM tickets WHERE ticket_name = '${ticket_name}'`, e =>{
+                                if(e) throw e
+                                console.log(`Deleted ${ticket_name}`)
+                            })
+                        }else{
+                            message.channel.send('Je zit nog niet in een group')
+                        }
                     })
                 }
             })
