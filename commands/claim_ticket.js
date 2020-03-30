@@ -30,5 +30,5 @@ module.exports.run = async(bot, message, args, con) =>{
 }
 
 module.exports.help ={
-    name:"tt"
+    name:"claim_ticket"
 }

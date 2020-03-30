@@ -15,7 +15,7 @@ module.exports.run = async(bot,message,args,con) =>{
                 
                 console.log(`${message.author.username} joined group: ${group_name}`)
 
-                message.channel.send(`Je bent **${group_name}** met success gejoined!`)
+                message.channel.send(`Je hebt **${group_name}** met success gejoined!`)
             }
         })
     }
