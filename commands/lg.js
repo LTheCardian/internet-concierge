@@ -12,7 +12,7 @@ module.exports.run = async(bot, message, args, con)=>{
                 if(e) throw e
 
                 console.log(`${message.author.username} left ${group_name}`)
-                message.channel.send(`Je hebt **${group_name}** successvol verlaten`)
+                message.channel.send(`Je bent **${group_name}** successvol verlaten`)
             }) 
         }
     })
