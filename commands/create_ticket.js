@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const errors = require('../utils/errors')
 module.exports.run = async(bot, message, args, con) =>{
     if(message.author.bot) return
-    if(!message.member.hasPermission('MANAGE_MESSAGE')){
+    if(!message.member.hasPermission('MANAGE_MESSAGES')){
         errors.noPerms(message, "MANAGE_MESSAGES")
     }else{
         ticket_name = args.join(" ")
