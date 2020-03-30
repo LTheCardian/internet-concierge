@@ -31,7 +31,7 @@ module.exports.run = async(bot, message, args, con) =>{
                                 console.log(`Deleted ${ticket_name}`)
                             })
                         }else{
-                            message.channel.send('Je zit nog niet in een group')
+                            message.channel.send('Je moet in een groep zitten om een ticket te kunnen claimen.')
                         }
                     })
                 }
