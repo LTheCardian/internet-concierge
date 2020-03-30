@@ -771,7 +771,7 @@ bot.login(process.env.TOKEN).then(()=>{
     schedule.scheduleJob({hour:10, minute:15}, ()=>{
       channel.send('Het is de grote pauze')
     })
-    schedule.scheduleJob({hour:7, minute:00}, () =>{
+    schedule.scheduleJob({hour:8, minute:00}, () =>{
       channel.send('Het is de kleine pauze')
     })
     schedule.scheduleJob({hour:12, minute:45}, () =>{
