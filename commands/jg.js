@@ -22,5 +22,5 @@ module.exports.run = async(bot,message,args,con) =>{
 }
 
 module.exports.help ={
-    name:"jg"
+    name:"join_group"
 }
