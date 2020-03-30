@@ -32,5 +32,5 @@ module.exports.run = async(bot, message, args, con) =>{
 }
 
 module.exports.help = {
-    name:'aa'
+    name:'add_agenda'
 }

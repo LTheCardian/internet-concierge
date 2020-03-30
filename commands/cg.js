@@ -17,8 +17,7 @@ module.exports.run = async(bot,message,args,con) =>{
                     console.log(`${message.author.username} ${group_name} aangemaakt`)
                     message.channel.send(`Group **${group_name}** is succesvol aangemaakt`)
                 })
-            }
-            else if (r.length > 0){
+            }else if (r.length > 0){
                 message.channel.send(`Group **${group_name}** bestaat al`)
             }else{
                 message.channel.send('Welke naam wil je dat de groep heeft?')
@@ -28,5 +27,5 @@ module.exports.run = async(bot,message,args,con) =>{
 }
 
 module.exports.help={
-    name:"cg"
+    name:"create_group"
 }
