@@ -7,7 +7,7 @@ module.exports.run = async(bot, message, args, con) =>{
         if (e) throw e
 
         if(tickets.length === 0){
-            message.channel.send(`Ticket **${ticket_naam}** bestaat niet`)
+            message.channel.send(`Ticket **${ticket_name}** bestaat niet`)
             return
         }else{
             con.query(`SELECT * FROM groups`, (e, groups) =>{
@@ -22,6 +22,11 @@ module.exports.run = async(bot, message, args, con) =>{
                         console.log(`${message.author.username} heeft succesvol ${ticket_name} geclaimed`)
 
                         message.channel.send(`Je hebt successvol **${ticket_name}** geclaimed`)
+                    })
+
+                    con.query(`DELETE FROM tickets WHERE ticket_name = '${ticket_name}'`, e =>{
+                        if(e) throw e
+                        console.log(`Deleted ${ticket_name}`)
                     })
                 }
             })
