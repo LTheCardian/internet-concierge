@@ -4,7 +4,7 @@ module.exports.run = async(bot, message, args, con) =>{
     con.query(`SELECT * FROM grouped WHERE member_id = '${message.author.id}'`, (e, r) =>{
         if(e) throw e
         if(r.length === 0){
-            message.channel.send('Je zit nog niet in een group.')
+            message.channel.send('Je zit nog niet in een groep.')
         }else{
             con.query(`SELECT * FROM c_tickets WHERE group_id = '${r[0].group_id}'`, (e, tickets)=>{
                 if(e) throw e
@@ -25,5 +25,5 @@ module.exports.run = async(bot, message, args, con) =>{
 }
 
 module.exports.help ={
-    name:'group'
+    name:'groep'
 }
