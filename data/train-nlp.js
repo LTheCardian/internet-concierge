@@ -50,6 +50,7 @@ module.exports = async function trainnlp(manager) {
     'when do you celebrate your birthday',
     'agent.birthday'
   );
+  manager.addDocument('en', "who's hitler?", 'agent.history')
   manager.addDocument('en', 'when were you born', 'agent.birthday');
   manager.addDocument('en', 'when do you have birthday', 'agent.birthday');
   manager.addDocument('en', 'date of your birthday', 'agent.birthday');
@@ -380,6 +381,7 @@ module.exports = async function trainnlp(manager) {
     'agent.annoying',
     "I'll do my best not to annoy you in the future"
   );
+  manager.addAnswer('en', 'agent.history', 'Hitler was born 20th of April in Austria.')
   manager.addAnswer('en', 'agent.annoying', "I'll try not to annoy you");
   manager.addAnswer(
     'en',
