@@ -652,17 +652,17 @@ bot.on('message', message =>{
 
 
 //twitter feed
-const dest ='690615557426249768'
+// const dest ='690615557426249768'
 
-const stream = tc.stream('statuses/filter', {
-  follow:'7174972' 
-})
+// const stream = tc.stream('statuses/filter', {
+//   follow:'7174972' 
+// })
 
-stream.on('tweet', tweet =>{
-  const tM = `${tweet.user.name} (@${tweet.user.screen_name}) heeft dit zojuist getweet: https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-  bot.channels.get(dest).send(tM)
-  return false
-})
+// stream.on('tweet', tweet =>{
+//   const tM = `${tweet.user.name} (@${tweet.user.screen_name}) heeft dit zojuist getweet: https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
+//   bot.channels.get(dest).send(tM)
+//   return false
+// })
 
 
 //music bot
