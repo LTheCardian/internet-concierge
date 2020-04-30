@@ -334,13 +334,13 @@ bot.on('message', message => {
 })
 
 bot.on('message', message => {
-  if (message.member.bot) return
+  if (message.author.bot) return
   if (message.channel.type === 'DM') return
   if (message.guild.id !== '689082371261464604' && !message.content.includes('CM')) {
     console.log('werkt')
     return
   }
-  if (message.member.bot) return
+  if (message.author.bot) return
   if (message.channel.type === 'DM') return
   let args = message.content.substring(botconfig.prefix.length).split(" ")
   const member = message.member
