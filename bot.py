@@ -1,13 +1,21 @@
 import os
 import discord
+from discord.ext import commands
 from dotenv import load_dotenv
-
+client = commands.Bot(command_prefix='.')
 load_dotenv()
+
 TOKEN = os.getenv('TOKEN')
+@client.command()
+async def load(ctx, extension):
+    client.load_extension(f'cogs.{extension}')
 
-class GluBot(discord.Client):
-    async def on_ready(self):
-        print(f'{self.user} is verbonden met discord')
+@client.command()
+async def unload(ctx, extentions):
+    client.unload_extension(f'cogs.{extension}')
 
-bot = GluBot()
-bot.run(TOKEN)
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        client.load_extension(f'cogs.{filename[:-3]}')
+
+client.run(TOKEN)
