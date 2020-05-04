@@ -9,6 +9,7 @@ TOKEN = os.getenv('TOKEN')
 @client.command()
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
+    
 
 @client.command()
 async def unload(ctx, extentions):
@@ -17,5 +18,5 @@ async def unload(ctx, extentions):
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
-
+        print(f'loaded cogs.{filename[:-3]}')
 client.run(TOKEN)

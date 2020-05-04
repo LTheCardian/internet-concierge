@@ -1,17 +1,17 @@
 import discord
 from discord.ext import commands
 
-class Example(commands.Cog):
+class Main(commands.Cog):
     def __init__(self, client):
         self.client = client
     
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Verbonden met discord')
+        print('Online')
 
     @commands.command()
     async def ping(self, ctx):
         await ctx.send('pong')
 
 def setup(client):
-    client.add_cog(Example(client))
+    client.add_cog(Main(client))
