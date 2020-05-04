@@ -21,9 +21,9 @@ class Tweet(commands.Cog):
         self.api = tweepy.API(auth)
 
     @commands.command()
-    async def tweet(self, ctx, args):
-        self.api.update_status(args)
-        await ctx.send(f'Ik heb **{args}** gepost op twitter')
+    async def tweet(self, ctx, *, msg):
+        self.api.update_status(msg)
+        await ctx.send(f'Ik heb **{msg}** gepost op twitter')
 
 def setup(client):
     client.add_cog(Tweet(client))        
