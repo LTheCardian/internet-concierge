@@ -19,9 +19,7 @@ class Tweet(commands.Cog):
         auth.set_access_token(TAT, TATS)
 
         self.api = tweepy.API(auth)
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print("Loaded tweet")
+
     @commands.command()
     async def tweet(self, ctx, args):
         self.api.update_status(args)
