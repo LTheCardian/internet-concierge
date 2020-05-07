@@ -15,18 +15,20 @@ const Twitter = require('twit')
 const ytdl = require('ytdl-core')
 const queue = new Map()
 let prefix = botconfig.prefix
+const GLU = '687969872621469766'
+const CMS = '689082371261464604'
 con.connect(e => {
   if (e) throw (e)
   console.log('Connected  database')
 })
-const twitterConf = {
-  consumer_key: process.env.TCK,
-  consumer_secret: process.env.TCS,
-  access_token: process.env.TATK,
-  access_token_secret: process.env.TATS
-}
+// const twitterConf = {
+//   consumer_key: process.env.TCK,
+//   consumer_secret: process.env.TCS,
+//   access_token: process.env.TATK,
+//   access_token_secret: process.env.TATS
+// }
 
-const tc = new Twitter(twitterConf)
+// const tc = new Twitter(twitterConf)
 
 fs.readdir("./commands/", (err, files) => {
   if (err) console.log(err);
@@ -73,15 +75,26 @@ bot.on("message", async message => {
 });
 
 bot.on('guildMemberAdd', member => {
-  const channel = member.guild.channels.find(ch => ch.id === "687969872621469845")
-  const mention = member.guild.channels.find(ch => ch.name === 'regels').toString()
-  const rollen = member.guild.channels.find(ch => ch.name === 'rollen').toString()
-  if (!channel) {
+  const channelG = member.guild.channels.find(ch => ch.id === "687969872621469845")
+  const channelC = member.guild.channels.find(ch => ch.id === '689845318061391905')
+  const mentionG = member.guild.channels.find(ch => ch.name === 'regels')
+  const mentionC = member.guild.channels.find(ch => ch.name === 'welkom').toString()
+  const rollen = member.guild.channels.find(ch => ch.name === 'rollen')
+  if (!channelG) {
     console.log('No channel')
+    return
+  }else if(!channelC){
     return
   }
 
-  channel.send(`Welkom student ${member} van het GLU! Lees eerst ${mention} en kijk daarna in ${rollen} om je klas doortegeven`)
+  if(guild.id === GLU){
+    channelG.send(`Gegroet, **${member.user.username}**. Lees eerst even **${mentionG}** door en geef daarna je klas door in **${rollen}** `)
+  }else if(guild.id === CMS){
+    channelC.send(`Gegroet, **${member.user.username}**. Lees eerst even **${mentionC}** door en geef daarna je klas door in **${rollen}**`)
+  }else{
+    return
+  }
+  
 
   con.query(`SELECT * FROM ungrouped WHERE member_id = ${member.id}`, (err, results) => {
     if (err) throw (err)
@@ -158,185 +171,131 @@ bot.on('message', message => {
 //roles
 
 bot.on('message', message => {
-  if (message.author.bot) return
-  if (message.channel.type === 'dm') return
-  let args = message.content.substring(botconfig.prefix.length).split(" ")
-  const member = message.member
-  const studenten = message.guild.roles.find(r => r.name === 'Studenten')
-  switch (args[0]) {
-    case '2MD1'.toLowerCase():
-      const _2md1 = message.guild.roles.find(r => r.name === '2MD1')
-      member.addRole(_2md1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_2md1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_2md1.name}`)
-      break;
-    case '1WDV1'.toLowerCase():
-      const _1wdv1 = message.guild.roles.find(r => r.name === '1WDV1')
-      member.addRole(_1wdv1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_1wdv1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_1wdv1.name}`)
-      break;
-    case '1WDV2'.toLowerCase():
-      const _1wdv2 = message.guild.roles.find(r => r.name === '1WDV2')
-      member.addRole(_1wdv2).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_1wdv2.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_1wdv2.name}`)
-      break;
-    case '2MD2'.toLowerCase():
-      const _2md2 = message.guild.roles.find(r => r.name === '2MD2')
-      member.addRole(_2md2).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_2md2.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_2md2.name}`)
-      break;
-    case '3MD1'.toLowerCase():
-      const _3md1 = message.guild.roles.find(r => r.name === '3MD1')
-      member.addRole(_3md1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_3md1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_3md1.name}`)
-      break;
-    case '1WD1'.toLowerCase():
-      const _1wd1 = message.guild.roles.find(r => r.name === '1WD1')
-      member.addRole(_1wd1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_1wd1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_1wd1.name}`)
-      break;
-    case '1WD2'.toLowerCase():
-      const _1wd2 = message.guild.roles.find(r => r.name === '1WD2')
-      member.addRole(_1wd2).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_1wd2.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_1wd2.name}`)
-      break;
-    case '1WD3'.toLowerCase():
-      const _1wd3 = message.guild.roles.find(r => r.name === '1WD3')
-      member.addRole(_1wd3).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_1wd3.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_1wd3.name}`)
-      break;
-    case '2WD1'.toLowerCase():
-      const _2wd1 = message.guild.roles.find(r => r.name === '2WD1')
-      member.addRole(_2wd1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_2wd1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully adeed ${message.author.username} to ${_2wd1.name}`)
-      break;
-    case '2WD2'.toLowerCase():
-      const _2wd2 = message.guild.roles.find(r => r.name === '2WD2')
-      member.addRole(_2wd2).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_2wd2.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_2wd2.name}`)
-      break;
-    case '3IV1'.toLowerCase():
-      const _3iv1 = message.guild.roles.find(r => r.name === '3IV1')
-      member.addRole(_3iv1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_3iv1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_3iv1.name}`)
-      break;
-    case '3IV2'.toLowerCase():
-      const _3iv2 = message.guild.roles.find(r => r.name === '3IV2')
-      member.addRole(_3iv2).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_3iv2.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_3iv2.name}`)
-      break;
-    case '4IV1'.toLowerCase():
-      const _4iv1 = message.guild.roles.find(r => r.name === '4IV1')
-      member.addRole(_4iv1).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_4iv1.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_4iv1.name}`)
-      break;
-    case '4IV2'.toLowerCase():
-      const _4iv2 = message.guild.roles.find(r => r.name === '4IV2')
-      member.addRole(_4iv2).catch(console.error)
-      member.addRole(studenten).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_4iv2.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_4iv2.name}`)
-      break;
-    case 'GIO'.toLowerCase():
-      const _gio = message.guild.roles.find(r => r.name === 'Gio')
-      member.addRole(_gio).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${_gio.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${_gio.name}`)
-      break
-    case 'GLUBOT'.toLowerCase():
-      const glubot = message.guild.roles.find(r => r.name === 'GLUbot')
-      member.addRole(glubot).catch(console.error)
-      message.channel.send(`Je bent nu lid van **${glubot.name}**`).then(m => m.delete(6000))
-      console.log(`Successfully added ${message.author.username} to ${glubot.name}`)
-      break;
-      // case '1CM1'.toLowerCase():
-      //   const _1cm1 = message.guild.roles.find(r => r.name === '1CM1')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_1cm1).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_1cm1.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_1cm1.name}`)
-      //   break
-      // case '1CM2'.toLowerCase():
-      //   const _1cm2 = message.guild.roles.find(r => r.name === '1CM2')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_1cm2).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_1cm2.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_1cm2.name}`)
-      //   break
-      // case '2CM1'.toLowerCase():
-      //   const _2cm1 = message.guild.roles.find(r => r.name === '2CM1')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_2cm1).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_2cm1.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_2cm1.name}`)
-      //   break
-      // case '2CM2'.toLowerCase():
-      //   const _2cm2 = message.guild.roles.find(r => r.name === '2CM2')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_2cm2).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_2cm2.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_2cm2.name}`)
-      //   break
-      // case '1CM3'.toLowerCase():
-      //   const _1cm3 = message.guild.roles.find(r => r.name ==='1CM3')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_1cm3).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_1cm3.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_1cm3.name}`)
-      //   break
-      // case '1CM4'.toLowerCase():
-      //   const _1cm4 = message.guild.roles.find(r => r.name ==='1CM4')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_1cm4).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_1cm4.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_1cm4.name}`)
-      //   break
-      // case '2CM3'.toLowerCase():
-      //   const _2cm3 = message.guild.roles.find(r => r.name === '2CM3')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_2cm3).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_2cm3.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.username} to ${_2cm3.name}`)
-      //   break
-      // case '2CM4'.toLowerCase():
-      //   const _2cm4 = message.guild.roles.find(r => r.name ==='2CM4')
-      //   member.addRole(studenten).catch(console.error)
-      //   member.addRole(_2cm4).catch(console.error)
-      //   message.channel.send(`Je bent nu lid van **${_2cm4.name}**`).then(m => m.delete(6000))
-      //   console.log(`Successfully added ${message.author.name} to ${_2cm4.name}`)
-      //   break
+  if(message.guild.id === GLU){
+    if (message.author.bot) return
+    if (message.channel.type === 'dm') return
+    let args = message.content.substring(botconfig.prefix.length).split(" ")
+    const member = message.member
+    const studenten = message.guild.roles.find(r => r.name === 'Studenten')
+    switch (args[0]) {
+      case '2MD1'.toLowerCase():
+        const _2md1 = message.guild.roles.find(r => r.name === '2MD1')
+        member.addRole(_2md1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_2md1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_2md1.name}`)
+        break;
+      case '1WDV1'.toLowerCase():
+        const _1wdv1 = message.guild.roles.find(r => r.name === '1WDV1')
+        member.addRole(_1wdv1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_1wdv1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_1wdv1.name}`)
+        break;
+      case '1WDV2'.toLowerCase():
+        const _1wdv2 = message.guild.roles.find(r => r.name === '1WDV2')
+        member.addRole(_1wdv2).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_1wdv2.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_1wdv2.name}`)
+        break;
+      case '2MD2'.toLowerCase():
+        const _2md2 = message.guild.roles.find(r => r.name === '2MD2')
+        member.addRole(_2md2).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_2md2.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_2md2.name}`)
+        break;
+      case '3MD1'.toLowerCase():
+        const _3md1 = message.guild.roles.find(r => r.name === '3MD1')
+        member.addRole(_3md1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_3md1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_3md1.name}`)
+        break;
+      case '1WD1'.toLowerCase():
+        const _1wd1 = message.guild.roles.find(r => r.name === '1WD1')
+        member.addRole(_1wd1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_1wd1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_1wd1.name}`)
+        break;
+      case '1WD2'.toLowerCase():
+        const _1wd2 = message.guild.roles.find(r => r.name === '1WD2')
+        member.addRole(_1wd2).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_1wd2.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_1wd2.name}`)
+        break;
+      case '1WD3'.toLowerCase():
+        const _1wd3 = message.guild.roles.find(r => r.name === '1WD3')
+        member.addRole(_1wd3).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_1wd3.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_1wd3.name}`)
+        break;
+      case '2WD1'.toLowerCase():
+        const _2wd1 = message.guild.roles.find(r => r.name === '2WD1')
+        member.addRole(_2wd1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_2wd1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully adeed ${message.author.username} to ${_2wd1.name}`)
+        break;
+      case '2WD2'.toLowerCase():
+        const _2wd2 = message.guild.roles.find(r => r.name === '2WD2')
+        member.addRole(_2wd2).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_2wd2.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_2wd2.name}`)
+        break;
+      case '3IV1'.toLowerCase():
+        const _3iv1 = message.guild.roles.find(r => r.name === '3IV1')
+        member.addRole(_3iv1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_3iv1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_3iv1.name}`)
+        break;
+      case '3IV2'.toLowerCase():
+        const _3iv2 = message.guild.roles.find(r => r.name === '3IV2')
+        member.addRole(_3iv2).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_3iv2.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_3iv2.name}`)
+        break;
+      case '4IV1'.toLowerCase():
+        const _4iv1 = message.guild.roles.find(r => r.name === '4IV1')
+        member.addRole(_4iv1).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_4iv1.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_4iv1.name}`)
+        break;
+      case '4IV2'.toLowerCase():
+        const _4iv2 = message.guild.roles.find(r => r.name === '4IV2')
+        member.addRole(_4iv2).catch(console.error)
+        member.addRole(studenten).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_4iv2.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_4iv2.name}`)
+        break;
+      case 'GIO'.toLowerCase():
+        const _gio = message.guild.roles.find(r => r.name === 'Gio')
+        member.addRole(_gio).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${_gio.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${_gio.name}`)
+        break
+      case 'GLUBOT'.toLowerCase():
+        const glubot = message.guild.roles.find(r => r.name === 'GLUbot')
+        member.addRole(glubot).catch(console.error)
+        message.channel.send(`Je bent nu lid van **${glubot.name}**`).then(m => m.delete(6000))
+        console.log(`Successfully added ${message.author.username} to ${glubot.name}`)
+        break;
+    }
   }
 })
 
 bot.on('message', message => {
   if (message.author.bot) return
   if (message.channel.type === 'DM') return
-  if (message.guild.id !== '689082371261464604' && !message.content.includes('CM')) {
+  if (message.guild.id !== CMS && !message.content.includes('CM')) {
     console.log('werkt')
     return
   }
@@ -581,22 +540,43 @@ bot.on('message', message => {
 })
 
 bot.on('message', message => {
-  const channelR = bot.channels.find(ch => ch.id === '688720597005500467')
-  if (message.author.bot) return
-  if (message.channel === channelR) {
-    message.delete(5000)
-    console.log(`I just deleted ${message.content} send ${message.author.username} in #rollen`)
-  } else {
-    return
+  if(message.guild.id === GLU ){
+    const channelR = bot.channels.find(ch => ch.id === '688720597005500467')
+    if (message.author.bot) return
+    if (message.channel === channelR) {
+      message.delete(5000)
+      console.log(`I just deleted ${message.content} send ${message.author.username} in #rollen`)
+    } else {
+      return
+    }
+  }
+})
+
+bot.on('message', message =>{
+  if(message.guild.id === CMS){
+    const channelRC = bot.channels.find(ch => ch.id ==='689840194811330594')
+    if(message.channel === channelRC){
+      message.delete(5000)
+      console.log(`I just deleted ${message.content} send by ${message.author.username} in #rollen`)
+    }else{
+      return
+    }
   }
 })
 
 bot.on('guildMemberRemove', member => {
-  const channel = member.guild.channels.find(ch => ch.id === "687969872621469845")
-  if (!channel) return
+  if(member.guild.id === GLU){
+    let channel = member.guild.channels.find(ch => ch.id === "687969872621469845")
+    if (!channel) return
 
-  channel.send(`Oei, daar gaat **${member}** 😔`)
-  console.log(`${member.user.username} just left the server`)
+    channel.send(`Oei, daar gaat **${member}** 😔`)
+    console.log(`${member.user.username} just left the server`)
+  }else{
+    let channel = member.guild.channels.find(ch => ch.id === '689845318061391905')
+    if(!channel) return
+
+    channel.send(`Oei, daar gaat **${member}** 😔`)
+  }
 })
 
 //level script
