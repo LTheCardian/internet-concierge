@@ -2,30 +2,23 @@ const rp = require('random-puppy')
 
 module.exports.run = async (bot, message, args) =>{
 
-    let reddit = [
-        "dankmemes",
-        "dankmeme",
-        "wholesomememes",
-        "MemeEconomy",
-        "meirl",
-        "me_irl",
-        'surrealmemes',
-        'ik_ihe',
-        'cirkeltrek',
-    ]
+    let subreddit = args.join(" ")
 
-    let subreddit = reddit[Math.floor(Math.random() * reddit.length)]
+    
 
     message.channel.startTyping()
-
-    rp(subreddit).then(async url =>{
-        await message.channel.send({
-            files:[{
-                attachment:url,
-                name:'uwu.png'
-            }]
-        }).then(() => message.channel.stopTyping())
-    }).catch(e => console.error(e))
+    if(subreddit){
+        rp(subreddit).then(async url =>{
+            await message.channel.send({
+                files:[{
+                    attachment:url,
+                    name:'uwu.png'
+                }]
+            }).then(() => message.channel.stopTyping())
+        }).catch(e => console.error(e))
+    }else{
+        message.channel.send(`geef een subreddit op`)
+    }
 }
 module.exports.help ={
     name:'meme'
