@@ -139,24 +139,24 @@ bot.on("guildMemberAdd", (member) => {
   member.addRole(guest).catch(console.error);
 });
 
-// bot.on("guildMemberRemove", (member) => {
-//   if (member.guild.id === GLU) {
-//     let channel = member.guild.channels.find(
-//       (ch) => ch.id === "687969872621469845"
-//     );
-//     if (!channel) return;
+bot.on("guildMemberRemove", (member) => {
+  if (member.guild.id === GLU) {
+    let channel = member.guild.channels.find(
+      (ch) => ch.id === "687969872621469845"
+    );
+    if (!channel) return;
 
-//     channel.send(`Oei, daar gaat **${member}** 😔`);
-//     console.log(`${member.user.username} just left the server`);
-//   } else {
-//     let channel = member.guild.channels.find(
-//       (ch) => ch.id === "689845318061391905"
-//     );
-//     if (!channel) return;
+    channel.send(`Oei, daar gaat **${member}** 😔`);
+    console.log(`${member.user.username} just left the server`);
+  } else {
+    let channel = member.guild.channels.find(
+      (ch) => ch.id === "689845318061391905"
+    );
+    if (!channel) return;
 
-//     channel.send(`Oei, daar gaat **${member}** 😔`);
-//   }
-// });
+    channel.send(`Oei, daar gaat **${member}** 😔`);
+  }
+});
 
 bot.on("message", (message) => {
   if (message.author.bot) return;
@@ -735,20 +735,6 @@ bot.on("message", (message) => {
       message.delete(5000);
       console.log(
         `I just deleted ${message.content} send ${message.author.username} in #rollen`
-      );
-    } else {
-      return;
-    }
-  }
-});
-
-bot.on("message", (message) => {
-  if (message.guild.id === CMS) {
-    const channelRC = bot.channels.find((ch) => ch.id === "689840194811330594");
-    if (message.channel === channelRC) {
-      message.delete(5000);
-      console.log(
-        `I just deleted ${message.content} send by ${message.author.username} in #rollen`
       );
     } else {
       return;
