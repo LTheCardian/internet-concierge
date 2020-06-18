@@ -15,6 +15,7 @@ const ytdl = require("ytdl-core");
 const queue = new Map();
 let prefix = botconfig.prefix;
 const GLU = "687969872621469766";
+const filter = [];
 con.connect((e) => {
   if (e) throw e;
   console.log("Connected  database");
@@ -36,7 +37,7 @@ fs.readdir("./commands/", (err, files) => {
 
 bot.on("ready", async () => {
   console.log(`${bot.user.username} is on ${bot.guilds.size} servers`);
-  bot.user.setActivity("GLU bot. gemaakt met ❤️ door Gio ", {
+  bot.user.setActivity("nieuwe dingen in de maak ", {
     type: "PLAYING",
   });
 });
@@ -945,112 +946,35 @@ bot.on("message", (message) => {
   });
 });
 
-//twitter feed
-// const dest ='690615557426249768'
+//spam filter
 
-// const stream = tc.stream('statuses/filter', {
-//   follow:'7174972'
-// })
+// Geblokkeerde woorden
+bot.on("message", (message) => {
+  con.query(`SELECT * FROM words`, (e, r) => {
+    if (e) throw e;
+    if (message.author.bot) return;
+    if (r.length === 0) {
+      console.log("There are no banned words to add to the filter");
+    }
+    const logs = message.guild.channels.find(
+      (channel) => channel.id === "687972977391697950"
+    );
+    const objects = Object.entries(r);
 
-// stream.on('tweet', tweet =>{
-//   const tM = `${tweet.user.name} (@${tweet.user.screen_name}) heeft dit zojuist getweet: https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-//   bot.channels.get(dest).send(tM)
-//   return false
-// })
-
-//music bot
-
-// bot.on('message', async message =>{
-//   if(message.author.bot) return
-//   if(!message.content.startsWith(prefix)) return
-
-//   const serverQueue = queue.get(message.guild.id)
-
-//   if(message.content.startsWith(`${prefix}play`)){
-//     execute(message, serverQueue)
-//     return
-//   }else if(message.content.startsWith(`${prefix}skip`)){
-//     skip(message, serverQueue)
-//   } else if(message.content.startsWith(`${prefix}stop`)){
-//     stop(message, serverQueue)
-//   }
-// })
-
-// async function execute(message, serverQueue){
-//   const args= message.content.split(" ")
-//   const voiceChannel = message.member.voiceChannel
-//   if(!voiceChannel){
-//     return message.channel.send('Je moet in een voice kanaal zitten')
-//   }
-//   const permissions = voiceChannel.permissionsFor(message.client.user)
-//   if(!permissions.has('CONNECT') || !permissions.has('SPEAK')){
-//     return message.channel.send("Ik heb niet genoeg permissie")
-//   }
-
-//   const songInfo = await ytdl.getInfo(args[1])
-//   const song ={
-//     title:songInfo.title,
-//     url:songInfo.video_url
-//   }
-
-//   if(!serverQueue){
-//     const queueConstruct ={
-//       textChannel: message.channel,
-//       voiceChannel: voiceChannel,
-//       connection: null,
-//       songs: [],
-//       volume:5,
-//       playing:true
-//     }
-
-//     queue.set(message.guild.id, queueConstruct)
-//     queueConstruct.songs.push(song)
-
-//     try{
-//       var connection = await voiceChannel.join()
-
-//       queueConstruct.connection = connection
-//       play(message.guild, queueConstruct.songs[0])
-//     }catch(e){
-//       console.log(e)
-//       queue.delete(message.guild.id)
-//       return message.channel.send(e)
-//     }
-//   }else{
-//     serverQueue.songs.push(song)
-//     return message.channel.send(`${song.title} is toegevoegd aan de wachtrij`)
-//   }
-// }
-
-// function skip (message, serverQueue){
-//   if(!message.member.voiceChannel){
-//     return message.channel.send('Je moet in een voice kanaal zitten')
-//   }
-
-//   if(!serverQueue){
-//     message.channel.send('Er is niets om overteslaan')
-//   }
-
-//   serverQueue.songs = []
-//   serverQueue.connection.dispatcher.end()
-// }
-// function play(guild, song) {
-//   const serverQueue = queue.get(guild.id);
-//   if (!song) {
-//     serverQueue.voiceChannel.leave();
-//     queue.delete(guild.id);
-//     return;
-//   }
-
-//   const dispatcher = serverQueue.connection
-//     .play(ytdl(song.url))
-//     .on("finish", () => {
-//       serverQueue.songs.shift();
-//       play(guild, serverQueue.songs[0]);
-//     })
-//     .on("error", error => console.error(error));
-//   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-//   serverQueue.textChannel.send(`Begonnen met het afspelen van: **${song.title}**`);
-// }
+    for (const [id, word] of objects) {
+      const banned_word = word.banned;
+      if (filter.includes(banned_word)) {
+        console.log("xd");
+      } else {
+        filter.push(banned_word);
+        console.log(filter);
+        console.log(`added ${banned_word} to the filter`);
+      }
+      if (message.content.includes(banned_word)) {
+        message.delete();
+      }
+    }
+  });
+});
 
 bot.login(process.env.TOKEN);

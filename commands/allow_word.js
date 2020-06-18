@@ -1,4 +1,4 @@
-const errors = require("../utils/errors");
+const errors = require("../utils/errors.js");
 
 module.exports.run = async (bot, message, args, con) => {
   if (!message.member.hasPermission("MANAGE_MESSAGES")) {
@@ -6,21 +6,21 @@ module.exports.run = async (bot, message, args, con) => {
   } else {
     word = args.join(" ");
 
-    con.query(`SELECT * FROM words WHERE banned = '${word}'`, (e, r) => {
+    con.query(`SELECT * FROM words WHERE banned="${word}"`, (e, r) => {
       if (e) throw e;
-      if (r.length === 0 && word.length <= 12) {
-        con.query(`INSERT INTO words(banned) VALUES('${word}')`, (e) => {
+      if (r.length === 0) {
+        message.channel.send("Dit woord staat niet in de database.");
+      } else {
+        con.query(`DELETE FROM words WHERE banned='${word}'`, (e) => {
           if (e) {
             console.error(e);
             message.channel.send(
               "Er is iets fout gegaan, probeer het later opnieuw"
             );
           } else {
-            console.log(
-              `${word} has been successfully added to the block list`
-            );
+            console.log(`${word} has been removed from the block list`);
             message.channel.send(
-              `ik heb **${word}** toegevoegd aan de lijst met geblokkeerde woorden`
+              `**${word}** is verwijderd van de lijst met geblokkeerde woorden`
             );
           }
         });
@@ -30,5 +30,5 @@ module.exports.run = async (bot, message, args, con) => {
 };
 
 module.exports.help = {
-  name: "block",
+  name: "allow",
 };
