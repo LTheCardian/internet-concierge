@@ -15,7 +15,7 @@ const ytdl = require("ytdl-core");
 const queue = new Map();
 let prefix = botconfig.prefix;
 const GLU = "687969872621469766";
-const filter = [];
+const filter = ["kanker", "nazi", "hoer", "kkr"];
 con.connect((e) => {
   if (e) throw e;
   console.log("Connected  database");
@@ -960,7 +960,7 @@ bot.on("message", (message) => {
       (channel) => channel.id === "687972977391697950"
     );
     const objects = Object.entries(r);
-
+    const arrayOb = Object.entries(filter);
     for (const [id, word] of objects) {
       const banned_word = word.banned;
       if (filter.includes(banned_word)) {
@@ -973,6 +973,19 @@ bot.on("message", (message) => {
       if (message.content.includes(banned_word)) {
         message.delete();
       }
+    }
+
+    for (const [id, word] of arrayOb) {
+      con.query(`SELECT * FROM words WHERE banned ="${word}"`, (e, r) => {
+        if (e) throw e;
+        if (r.length === 0) {
+          con.query(`INSERT INTO words(banned) VALUES('${word}')`, (e) => {
+            if (e) {
+              console.error(e);
+            }
+          });
+        }
+      });
     }
   });
 });

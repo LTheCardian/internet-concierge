@@ -23,16 +23,25 @@ module.exports.run = async (bot, message, args, con) => {
 
   message.channel.send(`Ik heb **${user}** gewaarschuwd voor: **${reason}**`);
 
-  con.query(
-    `SELECT * FROM warnings WHERE user_id = '${message.author.id}'`,
-    (e, r) => {
-      if (e) throw e;
+  con.query(`SELECT * FROM warnings WHERE user_id = '${user.id}'`, (e, r) => {
+    if (e) throw e;
 
-      if (r.length === 0) {
-        console.log("xd");
+    con.query(
+      `INSERT INTO warnings(user_name, user_id, warning, reason) VALUES('${user.username}', '${user.id}', 1, '${reason}')`,
+      (e) => {
+        if (e) {
+          console.error(e);
+          message.channel.send(
+            "Er is een fout opgetreden, probeer het later opnieuw"
+          );
+        }
       }
+    );
+
+    if (r[0].warning >= 1) {
+      con.query(`UPDATE warnings SET warning =${r[0].warning + 1}`);
     }
-  );
+  });
 };
 
 module.exports.help = {
