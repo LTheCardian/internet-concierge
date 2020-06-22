@@ -6,6 +6,7 @@ const bot = new Discord.Client({
 const cheerio = require("cheerio");
 const request = require("request");
 const botconfig = require("./botconfig.json");
+
 bot.commands = new Discord.Collection();
 require("dotenv").config();
 const mysql = require("mysql");
