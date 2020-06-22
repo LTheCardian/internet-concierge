@@ -964,7 +964,7 @@ bot.on("message", (message) => {
     for (const [id, word] of objects) {
       const banned_word = word.banned;
       if (filter.includes(banned_word)) {
-        console.log("xd");
+        return;
       } else {
         filter.push(banned_word);
         console.log(filter);
