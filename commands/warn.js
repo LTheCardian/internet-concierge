@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args, con) => {
     if (e) throw e;
 
     con.query(
-      `INSERT INTO warnings(user_name, user_id, warning, reason) VALUES('${user.username}', '${user.id}', 1, '${reason}')`,
+      `INSERT INTO warnings(user_name, user_id, warnings) VALUES('${user.username}', '${user.id}', 1)`,
       (e) => {
         if (e) {
           console.error(e);
@@ -38,8 +38,10 @@ module.exports.run = async (bot, message, args, con) => {
       }
     );
 
-    if (r[0].warning >= 1) {
-      con.query(`UPDATE warnings SET warning =${r[0].warning + 1}`);
+    if (r.length === 0) {
+      return;
+    } else if (r[0].warnings.length > 0 && r[0].warnings >= 1) {
+      con.query(`UPDATE warnings SET warnings = ${r[0].warnings + 1} `);
     }
   });
 };
