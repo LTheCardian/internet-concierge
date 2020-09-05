@@ -75,17 +75,17 @@ async function train(jsonData) {
         }
     });
     await trainnlp(manager);
-    console.log('Awaiting for training')
+    console.log('Waiting for training')
     const hrstart = process.hrtime();
     await manager.train();
     const hrend = process.hrtime(hrstart);
-    console.info('Trained (hr): %ds %dms', hrend[0], hrend[1] / 1000000);
+    console.info('Training finished (hr): %ds %dms', hrend[0], hrend[1] / 1000000);
     manager.save(modelPath);
 }
 
 async function handleMessage(e, message) {
   const response = await manager.process('en', message); 
-  const answer = response.score > threshold && response.answer ? response.answer: "Sorry, I don't know what do you mean";
+  const answer = response.score > threshold && response.answer ? response.answer: "Sorry, I don't know what you mean";
   const unmatcheResponse = response.score < threshold ? `\nMessage : ${message} - response : ${answer}\n` : '';
   fs.appendFile(unmatchedFile, unmatcheResponse, function () { });
   e.message.channel.sendMessage(answer);
